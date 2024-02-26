@@ -2,8 +2,9 @@ import express from 'express';
 
 const server = express();
 
+
 server.get('/', (req, res) => {
-    return res.send('Ola, DEV')
+  return res.send('Ola, DEV');
 });
 
 export { server };
