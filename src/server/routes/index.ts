@@ -1,5 +1,4 @@
 //import path from 'path';
-//import { StatusCodes } from 'http-status-codes';
 import { Router } from 'express';
 import { CidadesController } from './../controllers';
 
@@ -12,7 +11,10 @@ router.get('/', (_, res) => {
     //res.sendFile(path.join(__dirname, 'index.html'));//Teste para usar um html OK
 });
 
-router.post('/cidades', CidadesController.create);
+router.post(
+    '/cidades',
+    CidadesController.createValidation,
+    CidadesController.create);
 
 
 export { router };
