@@ -11,10 +11,12 @@ router.get('/', (_, res) => {
     //res.sendFile(path.join(__dirname, 'index.html'));//Teste para usar um html OK
 });
 
-router.post(
-    '/cidades',
-    CidadesController.createValidation,
-    CidadesController.create);
+
+router.get('/cidades', CidadesController.getAllValidation, CidadesController.getAll);
+router.post('/cidades', CidadesController.createValidation, CidadesController.create);
+router.get('/cidades/:id', CidadesController.getByIdValidation, CidadesController.getById);
+router.put('/cidades/:id', CidadesController.updateByIdValidation, CidadesController.updateById);
+router.delete('/cidades/:id', CidadesController.deleteByIdValidation, CidadesController.deleteById);
 
 
 export { router };
