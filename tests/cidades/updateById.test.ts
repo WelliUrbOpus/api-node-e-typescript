@@ -28,3 +28,7 @@ describe('Cidades - UpdateById', () => {
         expect(res2.body).toHaveProperty('errors.default');
     });
 });
+
+function expect(statusCode: any) {
+    throw new Error('Function not implemented.');
+}
