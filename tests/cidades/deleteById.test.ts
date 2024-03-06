@@ -2,29 +2,30 @@ import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
 
-describe('Cidades - Delete', () => {
-
-
+describe('Cidades - DeleteById', () => {
 
     it('Deletar um registro', async () => {
         const res1 = await testServer
-            .delete('/cidades')
-            .send({ 
-                name: 'Loveira', 
+            .post('/cidades')
+            .send({
+                name: 'Loveira',
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);
-        expect(typeof res1.body).toEqual('number');
+
+        const resApagada = await testServer
+            .delete(`/cidades/${res1.body}`)
+            .send();
+
+        expect(resApagada.statusCode).toEqual(StatusCodes.NO_CONTENT);
     });
 
-    it('Não pode deixar deletar se não infromar um numero ', async () => {
+    it('Tenta apagar registro que não existe', async () => {
         const res1 = await testServer
-            .post('/cidades')
-            .send({ 
-                id: 'lote', 
-            });
+            .delete('/cidades/99999')
+            .send();
 
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body.name');
+        expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+        expect(res1.body).toHaveProperty('errors.default');
     });
 });

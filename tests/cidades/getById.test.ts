@@ -2,29 +2,26 @@ import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
 
-describe('Cidades - Create', () => {
+describe('Cidades - GetById', () => {
 
-
-
-    it('Cria registro', async () => {
+    it('Busca registro por id', async () => {
         const res1 = await testServer
             .post('/cidades')
-            .send({ 
-                name: 'Louveira', 
-            });
+            .send({ name: 'Louveira' });
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);
-        expect(typeof res1.body).toEqual('number');
+        const resBuscada = await await testServer
+            .get(`/cidades/${res1.body}`).send();
+        
+        expect(resBuscada.statusCode).toEqual(StatusCodes.OK);
+        expect(resBuscada.body).toHaveProperty('name');
     });
 
-    it('Não pode deixar criar um registro', async () => {
+    it('Tenta buscar registro que não existe', async () => {
         const res1 = await testServer
-            .post('/cidades')
-            .send({ 
-                name: 'Lo', 
-            });
+            .get('/cidades/99999').send();
 
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body.name');
+        expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+        expect(res1.body).toHaveProperty('errors.default');
     });
 });

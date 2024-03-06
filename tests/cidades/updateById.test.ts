@@ -2,29 +2,29 @@ import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
 
-describe('Cidades - Create', () => {
+describe('Cidades - UpdateById', () => {
 
 
 
-    it('Cria registro', async () => {
+    it('Atualiza registro', async () => {
         const res1 = await testServer
             .post('/cidades')
-            .send({ 
-                name: 'Louveira', 
-            });
+            .send({ name: 'Louveira' });
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);
-        expect(typeof res1.body).toEqual('number');
+
+        const resAtualizada = await testServer
+            .put(`/cidades/${res1.body}`).send({ name: 'Jundiai' });
+
+        expect(resAtualizada.statusCode).toEqual(StatusCodes.NO_CONTENT);
     });
 
-    it('Não pode deixar criar um registro', async () => {
-        const res1 = await testServer
-            .post('/cidades')
-            .send({ 
-                name: 'Lo', 
-            });
+    it('Tenta atualizar registro que não existe', async () => {
+        const res2 = await testServer
+            .put('/cidades/99999')
+            .send({ name: 'Jundiai' });
 
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body.name');
+        expect(res2.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+        expect(res2.body).toHaveProperty('errors.default');
     });
 });
