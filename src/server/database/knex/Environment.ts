@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 import path from 'path';
 
 export const development: Knex.Config = {
-    client: 'sqlitr3',
+    client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
         filename: path.resolve(__dirname, '..', '..', '..', '..', 'database.sqlite')
@@ -15,7 +15,7 @@ export const development: Knex.Config = {
     },
     pool: {
         afterCreate: (connection: any, done: Function) => {
-            connection.run('PROGMA foreign_keys = ON');
+            connection.run('PRAGMA foreign_keys = ON');
             done();
         }
     }
