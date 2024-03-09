@@ -4,8 +4,6 @@ import { testServer } from '../jest.setup';
 
 describe('Cidades - UpdateById', () => {
 
-
-
     it('Atualiza registro', async () => {
         const res1 = await testServer
             .post('/cidades')
@@ -27,8 +25,6 @@ describe('Cidades - UpdateById', () => {
         expect(res2.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(res2.body).toHaveProperty('errors.default');
     });
+    
 });
 
-function expect(statusCode: any) {
-    throw new Error('Function not implemented.');
-}
