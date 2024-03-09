@@ -2,14 +2,14 @@ import { Request, Response } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { StatusCodes } from 'http-status-codes';
+import { ICidade } from '../../database/models';
 
 //Interface para validação do POST
 interface IParamProps {
     id?: number;
 }
-interface IBodyProps {
-    name: string;
-}
+
+interface IBodyProps extends Omit<ICidade, 'id'> { }
 
 //Regras de validação do POST usando o 'Yup'
 export const updateByIdValidation = validation((getSchema) => ({
