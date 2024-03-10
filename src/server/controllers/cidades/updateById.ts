@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { StatusCodes } from 'http-status-codes';
 import { ICidade } from '../../database/models';
+import { CidadesProvider } from '../../database/providers/cidades';
 
 //Interface para validação do POST
 interface IParamProps {
@@ -23,13 +24,20 @@ export const updateByIdValidation = validation((getSchema) => ({
 
 export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res: Response) => {
 
+    if (!req.params.id) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors: {
+                default: 'O parametro de "id" precisa ser infromado.'
+            }
+        });
+    }
 
-
-    if (Number(req.params.id) === 99999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    const result = await CidadesProvider.updateById(req.params.id, req.body);
+    if (result instanceof Error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         errors: {
-            default: 'Registro não encontrado'
+            default: result.message
         }
     });
 
-    return res.status(StatusCodes.NO_CONTENT).send();
+    return res.status(StatusCodes.NO_CONTENT).json(result);
 };
