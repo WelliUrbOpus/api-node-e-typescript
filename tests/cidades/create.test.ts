@@ -22,7 +22,7 @@ describe('Cidades - Create', () => {
             .post('/cidades')
             .send({ 
                 name: 'Lo', 
-            });
+            }); 
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res1.body).toHaveProperty('errors.body.name');
