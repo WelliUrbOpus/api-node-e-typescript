@@ -1,12 +1,11 @@
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
-import { ICidade } from '../../models';
+import { IPessoa } from '../../models';
 
 
-export const getById = async (id: number): Promise<ICidade | Error> => {
-
+export const getById = async (id: number): Promise<IPessoa | Error> => {
     try {
-        const result = await Knex(ETableNames.cidade)
+        const result = await Knex(ETableNames.pessoa)
             .select('*')
             .where('id', '=', id)
             .first();
@@ -19,5 +18,4 @@ export const getById = async (id: number): Promise<ICidade | Error> => {
         console.log(error);
         return new Error('Erro ao consultar o registro');
     }
-
 };

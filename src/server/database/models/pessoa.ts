@@ -1,6 +1,4 @@
 
-
-
 export interface IPessoa {
     id: number;
     firstName: string;
@@ -8,3 +6,4 @@ export interface IPessoa {
     email: string;
     cidadeId: number;
 }
+
