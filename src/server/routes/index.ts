@@ -1,6 +1,6 @@
 //import path from 'path';
 import { Router } from 'express';
-import { CidadesController } from './../controllers';
+import { CidadesController, PessoasController } from './../controllers';
 
 
 
@@ -18,11 +18,12 @@ router.get('/cidades/:id', CidadesController.getByIdValidation, CidadesControlle
 router.put('/cidades/:id', CidadesController.updateByIdValidation, CidadesController.updateById);
 router.delete('/cidades/:id', CidadesController.deleteByIdValidation, CidadesController.deleteById);
 
-router.get('/pessoas');
-router.post('/pessoas');
-router.get('/pessoas/:id');
-router.put('/pessoas/:id');
-router.delete('/pessoas/:id');
+router.get('/pessoas', PessoasController.getAllValidation, PessoasController.getAll);
+router.post('/pessoas', PessoasController.createValidation, PessoasController.create);
+router.get('/pessoas/:id', PessoasController.getByIdValidation, PessoasController.getById);
+router.put('/pessoas/:id', PessoasController.updateByIdValidation, PessoasController.updateById);
+router.delete('/pessoas/:id', PessoasController.deleteByIdValidation, PessoasController.deleteById);
+
 
 
 export { router };
