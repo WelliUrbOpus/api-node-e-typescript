@@ -7,7 +7,7 @@ export const updateById = async (id: Number, pessoa: Omit<IPessoa, 'id'>): Promi
 
     try {
 
-        const [{ count }] = await Knex(ETableNames.pessoa)
+        const [{ count }] = await Knex(ETableNames.cidade)
             .where('id', '=', pessoa.cidadeId)
             .count<[{ count: number }]>('* as count');
 
@@ -16,8 +16,8 @@ export const updateById = async (id: Number, pessoa: Omit<IPessoa, 'id'>): Promi
         }
 
         const result = await Knex(ETableNames.pessoa)
-            .where('id', '=', id)
-            .update(pessoa);
+            .update(pessoa)
+            .where('id', '=', id);
 
         if (result > 0) return;
 
