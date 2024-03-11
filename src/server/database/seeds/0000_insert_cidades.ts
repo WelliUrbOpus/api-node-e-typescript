@@ -11,7 +11,7 @@ export const seed = async (knex: Knex) => {
     if (!Number.isInteger(count) || Number(count) > 0) return;
 
     const cidadesToInsert = cidadesDeSaoPaulo.map(nomeDaCidade => ({ name: nomeDaCidade }));
-    console.log(`###### Tamanho da lista de cidades: ${cidadesToInsert.length}######`);
+    console.log(`###### Tamanho da lista de cidades: ${cidadesToInsert.length}`);
     await knex(ETableNames.cidade).insert(cidadesToInsert);
 };
 
