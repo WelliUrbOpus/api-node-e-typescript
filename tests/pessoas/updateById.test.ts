@@ -3,6 +3,15 @@ import { testServer } from '../jest.setup';
 
 
 describe('Pessoas - UpdateById', () => {
+    let cidadeId: number | undefined = undefined;
+    //Cria uma cidade para testar
+    beforeAll(async()=>{
+        const resCidade = await testServer
+            .post('/cidades')
+            .send({name:'Teste'});
+
+        cidadeId = resCidade.body;
+    });
 
     it('Atualiza registro', async () => {
         const res1 = await testServer
@@ -10,7 +19,7 @@ describe('Pessoas - UpdateById', () => {
             .send({
                 firstName: 'Wellington',
                 lastName: 'da Silva Urbano',
-                email: 'welligton.urb@ggmail.com',
+                email: 'welligton.update@ggmail.com',
                 cidadeId: '255'
             });
 
@@ -21,8 +30,8 @@ describe('Pessoas - UpdateById', () => {
             .send({
                 firstName: 'Welli',
                 lastName: 'da Silva',
-                email: 'welligton.urb@gmail.com',
-                cidadeId: '255'
+                email: 'welligtonupdate@gmail.com',
+                cidadeId: cidadeId
             });
 
         expect(resAtualizada.statusCode).toEqual(StatusCodes.NO_CONTENT);
@@ -34,8 +43,8 @@ describe('Pessoas - UpdateById', () => {
             .send({
                 firstName: 'Wellington',
                 lastName: 'da Silva Urbano',
-                email: 'welligton.urb@gmail.com',
-                cidadeId: '255'
+                email: 'welligtonupdate@gmail.com',
+                cidadeId: cidadeId
             });
 
         expect(res2.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);

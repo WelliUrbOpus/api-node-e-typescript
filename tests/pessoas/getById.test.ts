@@ -4,14 +4,25 @@ import { testServer } from '../jest.setup';
 
 describe('Pessoas - GetById', () => {
 
+    let cidadeId: number | undefined = undefined;
+
+    //Cria uma cidade para testar
+    beforeAll(async()=>{
+        const resCidade = await testServer
+            .post('/cidades')
+            .send({name:'Teste'});
+
+        cidadeId = resCidade.body;
+    });
+
     it('Busca registro por id', async () => {
         const res1 = await testServer
             .post('/pessoas')
             .send({ 
                 firstName: 'Wellington',
                 lastName: 'da Silva Urbano',
-                email: 'welligton.urb@gmail.com',
-                cidadeId: '255'
+                email: 'welligtongetbyid@gmail.com',
+                cidadeId: cidadeId
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);

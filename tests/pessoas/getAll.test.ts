@@ -1,10 +1,17 @@
 import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
-
 describe('Pessoas - GetAll', () => {
+    let cidadeId: number | undefined = undefined;
 
+    //Cria uma cidade para testar
+    beforeAll(async()=>{
+        const resCidade = await testServer
+            .post('/cidades')
+            .send({name:'Teste'});
 
+        cidadeId = resCidade.body;
+    });
 
     it('Buscar todos os registro', async () => {
         const res1 = await testServer
@@ -12,8 +19,8 @@ describe('Pessoas - GetAll', () => {
             .send({
                 firstName: 'Wellington',
                 lastName: 'da Silva Urbano',
-                email: 'welligton.urb@gmail.com',
-                cidadeId: '255'
+                email: 'welligtongetallb@gmail.com',
+                cidadeId: cidadeId
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);
