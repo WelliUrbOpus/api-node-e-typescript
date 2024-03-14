@@ -1,15 +1,14 @@
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
-import { IPessoa } from '../../models';
+import { ILevelUser } from '../../models';
 
 
-export const getAll = async (page: number, limit: number, filter: string): Promise<IPessoa[] | Error> => {
+export const getAll = async (page: number, limit: number, filter: string): Promise<ILevelUser[] | Error> => {
 
     try {
-        const result = Knex(ETableNames.pessoa)
+        const result = Knex(ETableNames.levelUser)
             .select('*')
-            .where('firstName', 'like', `%${filter}%`)
-            .orWhere('lastName', 'like', `%${filter}%`)
+            .where('level', 'like', `%${filter}%`)
             .offset((page - 1) * limit)
             .limit(limit);
         return result;
@@ -18,4 +17,5 @@ export const getAll = async (page: number, limit: number, filter: string): Promi
         console.log(error);
         return new Error('Erro ao consultar os registros');
     }
+
 };

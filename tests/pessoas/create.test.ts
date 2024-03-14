@@ -39,6 +39,7 @@ describe('Pessoas - Create', () => {
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);
         expect(typeof res1.body).toEqual('number');
+
     });
 
     it('Não pode deixar criar um registro => E-mail repetido ', async () => {
@@ -47,12 +48,25 @@ describe('Pessoas - Create', () => {
             .send({
                 firstName: 'Wellington',
                 lastName: 'da Silva Urbano',
-                email: 'welligtoncreate@gmail.com',
+                email: 'welligtoncreateduplicado@gmail.com',
                 cidadeId: cidadeId
             });
 
-        expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
-        expect(res1.body).toHaveProperty('errors.default');
+        expect(res1.statusCode).toEqual(StatusCodes.CREATED);
+        expect(typeof res1.body).toEqual('number');
+
+
+        const res2 = await testServer
+            .post('/pessoas')
+            .send({
+                firstName: 'Welli',
+                lastName: 'da Silva',
+                email: 'welligtoncreateduplicado@gmail.com',
+                cidadeId: cidadeId
+            });
+
+        expect(res2.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+        expect(res2.body).toHaveProperty('errors.default');
     });
 
     it('Criar registro com firstName curto', async () => {
@@ -66,7 +80,7 @@ describe('Pessoas - Create', () => {
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body');
+        expect(res1.body).toHaveProperty('errors.body.firstName');
     });
 
     it('Criar registro com lastName curto', async () => {
@@ -80,7 +94,33 @@ describe('Pessoas - Create', () => {
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body');
+        expect(res1.body).toHaveProperty('errors.body.lastName');
+    });
+
+    it('Criar registro sem firstName', async () => {
+        const res1 = await testServer
+            .post('/pessoas')
+            .send({
+                lastName: ' Sem firstName',
+                email: 'welligtonsemfirstname@gmail.com',
+                cidadeId: cidadeId
+            });
+
+        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+        expect(res1.body).toHaveProperty('errors.body.firstName');
+    });
+
+    it('Criar registro sem lastName', async () => {
+        const res1 = await testServer
+            .post('/pessoas')
+            .send({
+                firstName: 'Sem lastName',
+                email: 'welligtonsemlastname@gmail.com',
+                cidadeId: cidadeId
+            });
+
+        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+        expect(res1.body).toHaveProperty('errors.body.lastName');
     });
 
     it('Criar registro sem e-mail', async () => {
@@ -89,12 +129,11 @@ describe('Pessoas - Create', () => {
             .send({
                 firstName: 'Wellington',
                 lastName: 'sem email',
-                email: '',
                 cidadeId: cidadeId
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body');
+        expect(res1.body).toHaveProperty('errors.body.email');
     });
 
     it('Criar registro com e-mail inválido', async () => {
@@ -108,7 +147,7 @@ describe('Pessoas - Create', () => {
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body');
+        expect(res1.body).toHaveProperty('errors.body.email');
     });
 
     it('Criar registro sem cidadeId', async () => {
@@ -121,7 +160,7 @@ describe('Pessoas - Create', () => {
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body');
+        expect(res1.body).toHaveProperty('errors.body.cidadeId');
     });
 
     it('Criar registro com cidadeId inválida', async () => {
@@ -131,25 +170,23 @@ describe('Pessoas - Create', () => {
                 firstName: 'Wellington',
                 lastName: 'sem cidadeId',
                 email: 'welligtonsemcidadeid@gmail.com',
-                cidadeId: 9999999
+                cidadeId: 'teste'
             });
 
-        expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
-        expect(res1.body).toHaveProperty('errors.default');
+        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+        expect(res1.body).toHaveProperty('errors.body.cidadeId');
     });
 
     it('Criar registro sem enviar nenhuma propiedade', async () => {
         const res1 = await testServer
             .post('/pessoas')
-            .send({
-                firstName: '',
-                lastName: '',
-                email: '',
-                cidadeId: ''
-            });
+            .send({});
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body');
+        expect(res1.body).toHaveProperty('errors.body.firstName');
+        expect(res1.body).toHaveProperty('errors.body.lastName');
+        expect(res1.body).toHaveProperty('errors.body.email');
+        expect(res1.body).toHaveProperty('errors.body.cidadeId');
     });
 
 

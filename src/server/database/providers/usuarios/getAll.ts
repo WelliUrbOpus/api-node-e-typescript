@@ -1,15 +1,14 @@
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
-import { IPessoa } from '../../models';
+import { IUsuario } from '../../models';
 
 
-export const getAll = async (page: number, limit: number, filter: string): Promise<IPessoa[] | Error> => {
+export const getAll = async (page: number, limit: number, filter: string): Promise<IUsuario[] | Error> => {
 
     try {
-        const result = Knex(ETableNames.pessoa)
+        const result = Knex(ETableNames.usuario)
             .select('*')
-            .where('firstName', 'like', `%${filter}%`)
-            .orWhere('lastName', 'like', `%${filter}%`)
+            .where('name', 'like', `%${filter}%`)
             .offset((page - 1) * limit)
             .limit(limit);
         return result;
