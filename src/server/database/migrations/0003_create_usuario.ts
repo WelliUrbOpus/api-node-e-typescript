@@ -10,6 +10,7 @@ export async function up(knex: Knex) {
             table.string('name').index().notNullable();
             table.string('email').index().unique().notNullable().checkLength('>=', 4);
             table.string('password', 16).checkLength('>=', 4).checkLength('<=', 16).notNullable();
+            table.string('status', 16).checkLength('>=', 4).checkLength('<=', 16).notNullable();
 
             table.string('levelUser', 16)
                 .checkLength('<=', 16)
