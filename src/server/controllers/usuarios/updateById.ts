@@ -10,7 +10,7 @@ interface IParamProps {
     id?: number;
 }
 
-interface IBodyProps extends Omit<IUsuario, 'id' | 'status'> { }
+interface IBodyProps extends Omit<IUsuario, 'id' | 'status'| 'levelName'> { }
 
 //Regras de validação do POST usando o 'Yup'
 export const updateByIdValidation = validation((getSchema) => ({
@@ -20,6 +20,7 @@ export const updateByIdValidation = validation((getSchema) => ({
         email: yup.string().required().email(),
         levelId: yup.number().integer().required().moreThan(0),
         status:yup.string().oneOf(['Activated', 'Disabled']).optional(),
+        levelName: yup.string().optional().nullable(),
     })),
     params: getSchema<IParamProps>(yup.object().shape({
         id: yup.number().integer().required().moreThan(0),

@@ -20,6 +20,8 @@ export async function up(knex: Knex) {
                 .onUpdate('CASCADE')
                 .onDelete('RESTRICT');
 
+            table.string('levelName', 16).checkLength('>=', 3).checkLength('<=', 16).notNullable();
+
             table.comment('Tabela usada para armazenar usuarios do sistema');
         })
         .then(() => {

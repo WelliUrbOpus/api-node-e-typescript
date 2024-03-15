@@ -1,6 +1,6 @@
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
-import { IUsuario } from '../../models';
+import { IUsuario, ILevelUser} from '../../models';
 
 
 export const updateById = async (id: Number, usuario: Omit<IUsuario, 'id'>): Promise<void | Error> => {
@@ -14,6 +14,15 @@ export const updateById = async (id: Number, usuario: Omit<IUsuario, 'id'>): Pro
         if (count === 0) {
             return new Error('A nivel de usuario usada no cadastro não foi encontrada');
         }
+
+        //Busca na tabela de levelUser o level de acordo com o ID informado
+        const levelName: ILevelUser = await Knex(ETableNames.levelUser)
+            .select('*')
+            .where('id', '=', usuario.levelId)
+            .first()
+            .returning('levelName');
+        usuario.levelName = levelName.level;
+        console.log(` ###### ${usuario.levelName}`);
 
         const result = await Knex(ETableNames.usuario)
             .update(usuario)

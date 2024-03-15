@@ -7,7 +7,7 @@ import { UsuarioProvider } from '../../database/providers/usuarios';
 
 
 //Interface para validação do POST
-interface IBodyProps extends Omit<IUsuario, 'id' | 'status'> { }
+interface IBodyProps extends Omit<IUsuario, 'id' | 'status' | 'levelName'> { }
 
 //Regras de validação do POST usando o 'Yup'
 export const createValidation = validation((getSchema) => ({
@@ -17,6 +17,7 @@ export const createValidation = validation((getSchema) => ({
         email: yup.string().required().email(),
         levelId: yup.number().integer().required().moreThan(0),
         status: yup.string().oneOf(['Activated', 'Disabled']).optional(),
+        levelName: yup.string().optional().nullable(),
     })),
 }));
 
