@@ -14,7 +14,10 @@ export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
         name: yup.string().required().min(3),
         password: yup.string().required().min(4).max(16),
-        email: yup.string().required().email(),
+        email: yup.string().required().email().test('is-lowercase', 'O e-mail deve conter apenas letras minúsculas', value => {
+            if (!value) return true; // Se o valor estiver vazio, a validação passa
+            return value === value.toLowerCase(); // Verifica se o valor é igual ao valor convertido para minúsculas
+        }),
         levelId: yup.number().integer().required().moreThan(0),
         status: yup.string().oneOf(['Activated', 'Disabled']).optional(),
         levelName: yup.string().optional().nullable(),

@@ -30,8 +30,8 @@ router.get('/leveluser/:id', NivelUsuariosController.getByIdValidation, NivelUsu
 
 router.get('/usuarios', UsuariosController.getAllValidation, UsuariosController.getAll);
 router.post('/usuarios', UsuariosController.createValidation, UsuariosController.create);
-router.get('/usuarios/:email', UsuariosController.getByEmailValidation, UsuariosController.getByEmail);
-router.get('/usuarios/:name', UsuariosController.getByNameValidation, UsuariosController.getByName);
+router.get('/usuarios/email/:email', UsuariosController.getByEmailValidation, UsuariosController.getByEmail);
+router.get('/usuarios/name/:name', UsuariosController.getByNameValidation, UsuariosController.getByName);
 router.put('/usuarios/:id', UsuariosController.updateByIdValidation, UsuariosController.updateById);
 
 export { router };

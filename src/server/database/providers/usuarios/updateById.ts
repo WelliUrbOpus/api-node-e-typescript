@@ -22,7 +22,7 @@ export const updateById = async (id: Number, usuario: Omit<IUsuario, 'id'>): Pro
             .first()
             .returning('levelName');
         usuario.levelName = levelName.level;
-        console.log(` ###### ${usuario.levelName}`);
+        //console.log(` ###### ${usuario.levelName}`);
 
         const result = await Knex(ETableNames.usuario)
             .update(usuario)
