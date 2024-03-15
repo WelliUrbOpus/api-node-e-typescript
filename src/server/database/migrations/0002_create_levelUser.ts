@@ -7,7 +7,7 @@ export async function up(knex: Knex) {
         .schema
         .createTable(ETableNames.levelUser, table => {
             table.bigIncrements('id').primary().index();
-            table.string('level', 16).checkLength('<=', 16).index().notNullable();
+            table.string('level').index().notNullable();
 
             table.comment('Tabela usada para armazenar nível de usuário');
         })

@@ -6,11 +6,11 @@ export const create = async (usuario: Omit<IUsuario, 'id'>): Promise<number | Er
 
     try {
         const [{ count }] = await Knex(ETableNames.levelUser)
-            .where('level', '=', usuario.level)
+            .where('id', '=', usuario.levelId)
             .count<[{ count: number }]>('* as count');
 
         if (count === 0) {
-            return new Error('A cidade usada no cadastro não foi encontrada');
+            return new Error('O usuario usada no cadastro não foi encontrada');
         }
 
         const [result] = await Knex(ETableNames.usuario).insert(usuario).returning('id');
@@ -24,7 +24,7 @@ export const create = async (usuario: Omit<IUsuario, 'id'>): Promise<number | Er
 
     } catch (error) {
         console.log(error);
-        return new Error('Erro ao cadastrar o registro');
+        return new Error(`Erro ao cadastrar o registro => ${error}`);
     }
 
 };

@@ -2,23 +2,24 @@ import { Request, Response } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { StatusCodes } from 'http-status-codes';
-import { IPessoa } from '../../database/models';
-import { PessoasProvider } from '../../database/providers/pessoas';
+import { IUsuario } from '../../database/models';
+import { UsuarioProvider } from '../../database/providers/usuarios';
 
 //Interface para validação do POST
 interface IParamProps {
     id?: number;
 }
 
-interface IBodyProps extends Omit<IPessoa, 'id'> { }
+interface IBodyProps extends Omit<IUsuario, 'id' | 'status'> { }
 
 //Regras de validação do POST usando o 'Yup'
 export const updateByIdValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        firstName: yup.string().required().min(3),
-        lastName: yup.string().required().min(3),
+        name: yup.string().required().min(3),
+        password: yup.string().required().min(4).max(16),
         email: yup.string().required().email(),
-        cidadeId: yup.number().integer().required().moreThan(0),
+        levelId: yup.number().integer().required().moreThan(0),
+        status:yup.string().oneOf(['Activated', 'Disabled']).optional(),
     })),
     params: getSchema<IParamProps>(yup.object().shape({
         id: yup.number().integer().required().moreThan(0),
@@ -35,7 +36,7 @@ export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res:
         });
     }
 
-    const result = await PessoasProvider.updateById(req.params.id, req.body);
+    const result = await UsuarioProvider.updateById(req.params.id, req.body);
     if (result instanceof Error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         errors: {
             default: result.message

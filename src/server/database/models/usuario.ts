@@ -5,7 +5,7 @@ export interface IUsuario {
     name: string;
     email: string;
     password: string;
-    level:string;
-    status:string;
+    levelId:number;
+    status?:string;
 }
 

@@ -3,20 +3,15 @@ import { Knex } from '../../knex';
 import { ILevelUser } from '../../models';
 
 
-export const getById = async (id: number): Promise<string | Error> => {
+export const getById = async (id: number): Promise<ILevelUser | Error> => {
 
     try {
-        const [result] = await Knex(ETableNames.levelUser)
+        const result = await Knex(ETableNames.levelUser)
             .select('*')
             .where('id', '=', id)
-            .first()
-            .returning('level');
+            .first();
 
-        if (typeof result === 'object') {
-            return result.level;
-        } else if (typeof result === 'string') {
-            return result;
-        }
+        if (result) return result;
 
         return new Error('Registro não encontrado');
 

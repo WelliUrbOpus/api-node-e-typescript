@@ -7,7 +7,7 @@ import { UsuarioProvider } from '../../database/providers/usuarios';
 
 
 //Interface para validação do POST
-interface IBodyProps extends Omit<IUsuario, 'id'> { }
+interface IBodyProps extends Omit<IUsuario, 'id' | 'status'> { }
 
 //Regras de validação do POST usando o 'Yup'
 export const createValidation = validation((getSchema) => ({
@@ -15,14 +15,13 @@ export const createValidation = validation((getSchema) => ({
         name: yup.string().required().min(3),
         password: yup.string().required().min(4).max(16),
         email: yup.string().required().email(),
-        level: yup.string().required().min(4).max(16),           
-        status: yup.string().optional(),
+        levelId: yup.number().integer().required().moreThan(0),
+        status: yup.string().oneOf(['Activated', 'Disabled']).optional(),
     })),
 }));
 
 export const create = async (req: Request<{}, {}, IBodyProps>, res: Response) => {
     const result = await UsuarioProvider.create(req.body);
-
     if (result instanceof Error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
