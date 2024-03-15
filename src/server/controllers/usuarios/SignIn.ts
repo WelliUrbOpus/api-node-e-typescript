@@ -11,7 +11,7 @@ interface IBodyProps {
 }
 
 //Regras de validação do POST usando o 'Yup'
-export const getByEmailValidation = validation((getSchema) => ({
+export const signInValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
         typeLogin: yup.string().required().oneOf(['email', 'name']).nonNullable(),
         password: yup.string().required().min(4),
@@ -23,12 +23,15 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
     const { typeLogin, user, password } = req.body;
 
     if (typeLogin === 'email') {
+
         const resultEmail = await UsuarioProvider.getByEmail(user);
-        if (resultEmail instanceof Error) return res.status(StatusCodes.UNAUTHORIZED).json({
-            errors: {
-                default: 'Email ou senha são inválidos'
-            }
-        });
+        if (resultEmail instanceof Error) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                errors: {
+                    default: 'Email ou senha são inválidos'
+                }
+            });
+        }
 
         if (password !== resultEmail.password) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -42,12 +45,31 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
 
 
     } else {
+        //Caso typeLogin for "name"
         const resultName = await UsuarioProvider.getByName(user);
-        if (resultName instanceof Error) return res.status(StatusCodes.UNAUTHORIZED).json({
-            errors: {
-                default: 'Usuário ou senha são inválidos'
-            }
-        });
+        // console.log(`####SignIn DB password: ${resultName.name}`);
+        //console.log(`####SignIn INFO password: ${password}`);
+
+
+        if (resultName instanceof Error) {
+            //console.log(`####SignIn INFO ERROR: ${resultName.message}`);
+
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                errors: {
+                    default: '#Usuário ou senha são inválidos'
+                }
+            });
+        }
+
+        if (password !== resultName.password) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                errors: {
+                    default: 'Usuário ou senha são inválidos'
+                }
+            });
+        } else {
+            return res.status(StatusCodes.OK).json({ accessTokem: 'teste.teste.teste' });
+        }
 
 
     }

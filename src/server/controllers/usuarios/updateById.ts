@@ -6,15 +6,13 @@ import { IUsuario } from '../../database/models';
 import { UsuarioProvider } from '../../database/providers/usuarios';
 
 //Interface para validação do POST
-interface IParamProps {
-    id?: number;
-}
 
-interface IBodyProps extends Omit<IUsuario, 'id' | 'status' | 'levelName'> { }
+interface IBodyProps extends Omit<IUsuario, 'status' | 'levelName'> { }
 
 //Regras de validação do POST usando o 'Yup'
 export const updateByIdValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
+        id: yup.number().integer().required().nonNullable().moreThan(0),
         name: yup.string().required().min(3),
         password: yup.string().required().min(4).max(16),
         email: yup.string().required().email().test('is-lowercase', 'O e-mail deve conter apenas letras minúsculas', value => {
@@ -24,15 +22,12 @@ export const updateByIdValidation = validation((getSchema) => ({
         levelId: yup.number().integer().required().moreThan(0),
         status: yup.string().oneOf(['Activated', 'Disabled']).optional(),
         levelName: yup.string().optional().nullable(),
-    })),
-    params: getSchema<IParamProps>(yup.object().shape({
-        id: yup.number().integer().required().moreThan(0),
-    })),
+    }))  
 }));
 
-export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res: Response) => {
+export const updateById = async (req: Request<{}, {}, IBodyProps>, res: Response) => {
 
-    if (!req.params.id) {
+    if (!req.body.id) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             errors: {
                 default: 'O parametro de "id" precisa ser infromado.'
@@ -40,7 +35,7 @@ export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res:
         });
     }
 
-    const result = await UsuarioProvider.updateById(req.params.id, req.body);
+    const result = await UsuarioProvider.updateById(req.body);
     if (result instanceof Error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         errors: {
             default: result.message

@@ -3,7 +3,7 @@ import { Knex } from '../../knex';
 import { IUsuario, ILevelUser} from '../../models';
 
 
-export const updateById = async (id: Number, usuario: Omit<IUsuario, 'id'>): Promise<void | Error> => {
+export const updateById = async (usuario: IUsuario): Promise<void | Error> => {
 
     try {
 
@@ -26,7 +26,7 @@ export const updateById = async (id: Number, usuario: Omit<IUsuario, 'id'>): Pro
 
         const result = await Knex(ETableNames.usuario)
             .update(usuario)
-            .where('id', '=', id);
+            .where('id', '=', usuario.id);
 
         if (result > 0) return;
 

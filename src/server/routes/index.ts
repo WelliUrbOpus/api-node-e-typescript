@@ -24,14 +24,13 @@ router.get('/pessoas/:id', PessoasController.getByIdValidation, PessoasControlle
 router.put('/pessoas/:id', PessoasController.updateByIdValidation, PessoasController.updateById);
 router.delete('/pessoas/:id', PessoasController.deleteByIdValidation, PessoasController.deleteById);
 
+//router.post('/leveluser', NivelUsuariosController.createValidation, NivelUsuariosController.create);
 router.get('/leveluser', NivelUsuariosController.getAllValidation, NivelUsuariosController.getAll);
-router.post('/leveluser', NivelUsuariosController.createValidation, NivelUsuariosController.create);
 router.get('/leveluser/:id', NivelUsuariosController.getByIdValidation, NivelUsuariosController.getById);
 
 router.get('/usuarios', UsuariosController.getAllValidation, UsuariosController.getAll);
-router.post('/usuarios', UsuariosController.createValidation, UsuariosController.create);
-router.get('/usuarios/email/:email', UsuariosController.getByEmailValidation, UsuariosController.getByEmail);
-router.get('/usuarios/name/:name', UsuariosController.getByNameValidation, UsuariosController.getByName);
-router.put('/usuarios/:id', UsuariosController.updateByIdValidation, UsuariosController.updateById);
+router.post('/cadastrar', UsuariosController.createValidation, UsuariosController.create);
+router.get('/entrar', UsuariosController.signInValidation, UsuariosController.signIn);
+router.put('/usuarios/update', UsuariosController.updateByIdValidation, UsuariosController.updateById);
 
 export { router };
