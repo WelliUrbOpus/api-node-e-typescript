@@ -9,7 +9,7 @@ export async function up(knex: Knex) {
             table.bigIncrements('id').primary().index();
             table.string('name').index().unique().notNullable().checkLength('>=', 3);
             table.string('email').index().unique().notNullable().checkLength('>=', 4);
-            table.string('password', 16).checkLength('>=', 4).checkLength('<=', 16).notNullable();
+            table.string('password').notNullable();
             table.enu('status', ['Activated', 'Disabled']).index().checkLength('>=', 4).checkLength('<=', 16).notNullable().defaultTo('Activated');
 
             table.bigInteger('levelId')

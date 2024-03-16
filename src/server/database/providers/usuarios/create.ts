@@ -1,3 +1,4 @@
+import { PasswordCrypto } from '../../../shared/services';
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
 import { ILevelUser, IUsuario } from '../../models';
@@ -14,8 +15,6 @@ export const create = async (usuario: Omit<IUsuario, 'id'>): Promise<number | Er
             return new Error('O usuario usada no cadastro não foi encontrada');
         }
 
-
-
         //Busca na tabela de levelUser o level de acordo com o ID informado
         const levelName: ILevelUser = await Knex(ETableNames.levelUser)
             .select('*')
@@ -23,8 +22,11 @@ export const create = async (usuario: Omit<IUsuario, 'id'>): Promise<number | Er
             .first()
             .returning('levelName');
         usuario.levelName = levelName.level;
-       
-        const [result] = await Knex(ETableNames.usuario).insert(usuario).returning('id');
+
+        //Crypt da senha
+        const hashedPassword = await PasswordCrypto.hashPassword(usuario.password);
+
+        const [result] = await Knex(ETableNames.usuario).insert({ ...usuario, password: hashedPassword }).returning('id');
         if (typeof result === 'object') {
             return result.id;
         } else if (typeof result === 'number') {

@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { UsuarioProvider } from '../../database/providers/usuarios';
 import * as yup from 'yup';
 import { validation } from '../../shared/middleware';
+import { PasswordCrypto } from '../../shared/services';
 
 interface IBodyProps {
     typeLogin: string;
@@ -46,6 +47,8 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
             });
         }
 
+
+
         const resultEmail = await UsuarioProvider.getByEmail(user);
         if (resultEmail instanceof Error) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -55,7 +58,8 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
             });
         }
 
-        if (password !== resultEmail.password) {
+        const passwordMatchEmail = await PasswordCrypto.verifyPassword(password, resultEmail.password);
+        if (!passwordMatchEmail) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 errors: {
                     default: 'Email ou senha são inválidos'
@@ -78,8 +82,8 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
                 }
             });
         }
-
-        if (password !== resultName.password) {
+        const passwordMatchName = await PasswordCrypto.verifyPassword(password, resultName.password);
+        if (!passwordMatchName) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 errors: {
                     default: 'Usuário ou senha são inválidos'
