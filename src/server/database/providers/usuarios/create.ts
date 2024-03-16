@@ -23,8 +23,7 @@ export const create = async (usuario: Omit<IUsuario, 'id'>): Promise<number | Er
             .first()
             .returning('levelName');
         usuario.levelName = levelName.level;
-        //console.log(` ###### ${usuario.levelName}`);
-
+       
         const [result] = await Knex(ETableNames.usuario).insert(usuario).returning('id');
         if (typeof result === 'object') {
             return result.id;

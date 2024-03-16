@@ -11,11 +11,11 @@ export const count = async (filter = ''): Promise<number | Error> => {
 
         if (Number.isInteger(Number(count))) return Number(count);
 
-        return new Error('Erro ao cconsultar a quantidade total de registro');
+        return new Error('Erro ao consultar a quantidade total de registro');
 
     } catch (error) {
         console.log(error);
-        return new Error('Erro ao cconsultar a quantidade total de registro');
+        return new Error('Erro ao consultar a quantidade total de registro');
     }
 
 };

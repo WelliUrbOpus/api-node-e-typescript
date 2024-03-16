@@ -69,16 +69,12 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
     } else {
         //Caso typeLogin for "name"
         const resultName = await UsuarioProvider.getByName(user);
-        // console.log(`####SignIn DB password: ${resultName.name}`);
-        //console.log(`####SignIn INFO password: ${password}`);
-
 
         if (resultName instanceof Error) {
-            //console.log(`####SignIn INFO ERROR: ${resultName.message}`);
 
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 errors: {
-                    default: '#Usuário ou senha são inválidos'
+                    default: 'Usuário ou senha são inválidos'
                 }
             });
         }

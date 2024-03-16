@@ -22,7 +22,7 @@ export const getById = async (req: Request<IParamProps>, res: Response) => {
     if (!req.params.id) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             errors: {
-                default: 'O parametro de "id" precisa ser infromado.'
+                default: 'O parâmetro de "id" precisa ser informado.'
             }
         });
     }

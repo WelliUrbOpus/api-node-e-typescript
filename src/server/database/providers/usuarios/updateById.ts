@@ -22,8 +22,7 @@ export const updateById = async (usuario: IUsuario): Promise<void | Error> => {
             .first()
             .returning('levelName');
         usuario.levelName = levelName.level;
-        //console.log(` ###### ${usuario.levelName}`);
-
+        
         const result = await Knex(ETableNames.usuario)
             .update(usuario)
             .where('id', '=', usuario.id);

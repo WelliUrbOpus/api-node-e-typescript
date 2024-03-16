@@ -5,8 +5,7 @@ import { IUsuario } from '../../models';
 
 export const getByName = async (name: string): Promise<IUsuario | Error> => {
     try {
-        //console.log(` Provaider Buscar Name: ${name}`);
-
+        
         const result = await Knex(ETableNames.usuario)
             .select('*')
             .where('name', '=', name)
@@ -14,7 +13,7 @@ export const getByName = async (name: string): Promise<IUsuario | Error> => {
 
         if (result) return result;
 
-        return new Error('Pro Registro não encontrado');
+        return new Error('Registro não encontrado');
 
     } catch (error) {
         console.log(error);
