@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { AnyObject, Maybe, ObjectSchema, Schema, ValidationError } from 'yup';
+import { AnyObject, Maybe, ObjectSchema, ValidationError } from 'yup';
 
 type TProperty = 'body' | 'header' | 'params' | 'query';
 
