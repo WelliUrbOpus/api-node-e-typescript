@@ -3,7 +3,11 @@ import * as jwt from 'jsonwebtoken';
 
 
 interface IJwtData {
-    uid: number;
+    uId: number;
+    uName:string;
+    uEmail:string;
+    uLevel?:string;
+    uStatus?:string;
 }
 
 

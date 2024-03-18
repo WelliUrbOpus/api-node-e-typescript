@@ -3,22 +3,37 @@ import { testServer } from '../jest.setup';
 
 
 describe('Usuários - GetAll', () => {
+    
+    let accessToken = '';
 
-    it('Buscar todos os registro', async () => {
-        const res1 = await testServer
+    beforeAll(async () => {
+        const email = 'dev@teste.com';
+        const name = 'Dev Teste';
+        await testServer
             .post('/cadastrar')
             .send({
-                name: 'Frank GetAll',
-                password: '1234',
-                email: 'frankgetall@teste',
+                name: name,
+                email: email,
+                password: '123456',
                 levelId: 1
             });
 
-        expect(res1.statusCode).toEqual(StatusCodes.CREATED);
-        expect(typeof res1.body).toEqual('number');
+        const signInRes = await testServer
+            .post('/entrar')
+            .send({
+                typeLogin: 'name',
+                user: name,
+                password: '123456'
+            });
 
+        accessToken = signInRes.body.accessToken;
+        //console.log(`### Token de acesso: => ${signInRes.body.accessToken}`);
+    });
+
+    it('Buscar todos os registro', async () => {
         const resBuscada = await testServer
             .get('/usuarios')
+            .set({ Authorization: `Bearer ${accessToken}` })
             .send();
 
         expect(Number(resBuscada.header['x-total-count'])).toBeGreaterThan(0);

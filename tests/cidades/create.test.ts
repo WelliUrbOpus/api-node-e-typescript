@@ -27,10 +27,8 @@ describe('Cidades - Create', () => {
             });
 
         accessToken = signInRes.body.accessToken;
-        console.log(`###=> ${signInRes.body.accessToken}`);
+        //console.log(`### Token de acesso: => ${signInRes.body.accessToken}`);
     });
-
-
 
     it('Tenta cria registro sem token de acesso', async () => {
         const res1 = await testServer

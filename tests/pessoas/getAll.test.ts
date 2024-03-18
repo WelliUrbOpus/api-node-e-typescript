@@ -3,19 +3,44 @@ import { testServer } from '../jest.setup';
 
 describe('Pessoas - GetAll', () => {
     let cidadeId: number | undefined = undefined;
+    let accessToken = '';
 
-    //Cria uma cidade para testar
-    beforeAll(async()=>{
+    beforeAll(async () => {
+        const email = 'dev@teste.com';
+        const name = 'Dev Teste';
+        await testServer
+            .post('/cadastrar')
+            .send({
+                name: name,
+                email: email,
+                password: '123456',
+                levelId: 1
+            });
+
+        const signInRes = await testServer
+            .post('/entrar')
+            .send({
+                typeLogin: 'name',
+                user: name,
+                password: '123456'
+            });
+
+        accessToken = signInRes.body.accessToken;
+        //console.log(`### Token de acesso: => ${signInRes.body.accessToken}`);
+
         const resCidade = await testServer
             .post('/cidades')
-            .send({name:'Teste'});
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send({ name: 'Teste' });
 
         cidadeId = resCidade.body;
     });
 
+
     it('Buscar todos os registro', async () => {
         const res1 = await testServer
             .post('/pessoas')
+            .set({ Authorization: `Bearer ${accessToken}` })
             .send({
                 firstName: 'Wellington',
                 lastName: 'da Silva Urbano',
@@ -27,6 +52,7 @@ describe('Pessoas - GetAll', () => {
 
         const resBuscada = await testServer
             .get('/pessoas')
+            .set({ Authorization: `Bearer ${accessToken}` })
             .send();
 
         expect(Number(resBuscada.header['x-total-count'])).toBeGreaterThan(0);

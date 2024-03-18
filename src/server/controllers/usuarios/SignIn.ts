@@ -66,7 +66,14 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
                 }
             });
         } else {
-            const accessTokem = await JWTService.sign({ uid: usuarioEmail.id });//Criar token de acesso
+            const accessTokem = await JWTService.sign({ 
+                uId: usuarioEmail.id,
+                uName: usuarioEmail.name,
+                uEmail: usuarioEmail.email,
+                uLevel: usuarioEmail.levelName,
+                uStatus: usuarioEmail.status                
+            });//Criar token de acesso
+
             if (accessTokem === 'JTW_SECRET_NOT_FOUND') {
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     errors: {
@@ -100,7 +107,14 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
             });
         } else {
 
-            const accessTokem = await JWTService.sign({ uid: usuarioName.id });//Criar token de acesso
+            const accessTokem = await JWTService.sign({
+                uId: usuarioName.id,
+                uName: usuarioName.name,
+                uEmail: usuarioName.email,
+                uLevel: usuarioName.levelName,
+                uStatus: usuarioName.status
+            });//Criar token de acesso
+            
             if (accessTokem === 'JTW_SECRET_NOT_FOUND') {
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     errors: {
