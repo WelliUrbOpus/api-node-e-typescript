@@ -75,7 +75,7 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
                 });
             }
 
-            return res.status(StatusCodes.OK).json({ accessTokem: 'teste.teste.teste' });
+            return res.status(StatusCodes.OK).json({ accessToken: accessTokem });
         }
 
 
@@ -109,7 +109,7 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
                 });
             }
 
-            return res.status(StatusCodes.OK).json({ accessTokem: accessTokem });
+            return res.status(StatusCodes.OK).json({ accessToken: accessTokem });
         }
 
 

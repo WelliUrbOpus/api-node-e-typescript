@@ -14,7 +14,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Faz login - typeLogin: name', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'name',
                 user: 'Eder Login',
@@ -22,12 +22,12 @@ describe('Teste controller - SignIn => Login de usuário', () => {
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.OK);
-        expect(res1.body).toHaveProperty('accessTokem');
+        expect(res1.body).toHaveProperty('accessToken');
     });
 
     it('Faz login - typeLogin: email', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'email',
                 user: 'ederlogin@teste',
@@ -35,12 +35,12 @@ describe('Teste controller - SignIn => Login de usuário', () => {
             });
 
         expect(res1.statusCode).toEqual(StatusCodes.OK);
-        expect(res1.body).toHaveProperty('accessTokem');
+        expect(res1.body).toHaveProperty('accessToken');
     });
 
     it('Logar com senha errada - typeLogin: name', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'name',
                 user: 'Eder Login',
@@ -53,7 +53,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Logar com senha errada - typeLogin: email', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'email',
                 user: 'ederlogin@teste',
@@ -66,7 +66,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Logar com usuário errada - typeLogin: name', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'name',
                 user: 'Eder Login errado',
@@ -79,7 +79,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Logar com usuário errada - typeLogin: email', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'email',
                 user: 'ederlogin@testeerrado',
@@ -92,7 +92,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Logar sem typeLogin informado', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 user: 'ederlogin@teste',
                 password: '123456'
@@ -104,7 +104,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Logar com typeLogin invalido', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'e-mail',
                 user: 'ederlogin@teste',
@@ -117,7 +117,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Formato de email invalido', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'email',
                 user: 'ederloginteste',
@@ -130,7 +130,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Erro de senha muito pequena - typeLogin: name', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'name',
                 user: 'Eder Login',
@@ -143,7 +143,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Erro de senha muito pequena - typeLogin: email', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'email',
                 user: 'ederlogin@teste',
@@ -156,7 +156,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Não informar a senha - typeLogin: name', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'name',
                 user: 'Eder Login'
@@ -168,7 +168,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Não informar a senha - typeLogin: email', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'email',
                 user: 'ederlogin@teste'                
@@ -180,7 +180,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Não informar o usuário - typeLogin: name', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'name',
                 password:'1234'
@@ -192,7 +192,7 @@ describe('Teste controller - SignIn => Login de usuário', () => {
 
     it('Não informar o usuário - typeLogin: email', async () => {
         const res1 = await testServer
-            .get('/entrar')
+            .post('/entrar')
             .send({
                 typeLogin: 'email',
                 password:'1234'

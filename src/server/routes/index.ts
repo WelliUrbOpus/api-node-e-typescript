@@ -32,6 +32,6 @@ router.get('/leveluser/:id',ensureAuthenticated, NivelUsuariosController.getById
 router.get('/usuarios',ensureAuthenticated, UsuariosController.getAllValidation, UsuariosController.getAll);
 router.put('/usuarios/update',ensureAuthenticated, UsuariosController.updateByIdValidation, UsuariosController.updateById);
 router.post('/cadastrar', UsuariosController.createValidation, UsuariosController.create);
-router.get('/entrar', UsuariosController.signInValidation, UsuariosController.signIn);
+router.post('/entrar', UsuariosController.signInValidation, UsuariosController.signIn);
 
 export { router };
