@@ -855,6 +855,13 @@
   dependencies:
     undici-types "~5.26.4"
 
+"@types/node@^20.11.29":
+  version "20.11.29"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.29.tgz#431253cede34f392d6aaf7acad427b9c23aa60f6"
+  integrity sha512-P99thMkD/1YkCvAtOd6/zGedKNA0p2fj4ZpjCzcNiSCBWgm3cNRTBfa/qjFnsKkkojxu4vVLtWpesnZ9+ap+gA==
+  dependencies:
+    undici-types "~5.26.4"
+
 "@types/pg@^8.11.2":
   version "8.11.2"
   resolved "https://registry.yarnpkg.com/@types/pg/-/pg-8.11.2.tgz#e5c306601d2e0cc54c0801cc61a41761c8a95c92"
