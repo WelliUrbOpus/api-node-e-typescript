@@ -5,6 +5,8 @@ IS_LOCALHOST=false
 
 JWT_SECRET=[alguma chave secreta e única]
 
+ENABLED_CORS
+
 DATABASE_URL=
 
 DATABASE_HOST=
